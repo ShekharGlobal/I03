@@ -1,0 +1,116 @@
+CREATE TABLE customers (
+  customerNumber int,
+  customerName  varchar(50) ,
+  contactLastName varchar(50),
+  contactFirstName varchar(50),
+  phone varchar(50) ,
+  addressLine1 varchar(50),
+  addressLine2 varchar(50),
+  city varchar(50),
+  state varchar(50),
+  postalCode varchar(15),
+  country varchar(50),
+  salesRepEmployeeNumber int,
+  creditLimit double
+) 
+
+INSERT INTO customers (customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit) 
+VALUES 
+(1, 'Gupta Industries', 'Gupta', 'Ramesh', '9876543210', '123 MG Road', 'Suite 4', 'Mumbai', 'Maharashtra', '400001', 'India', 101, 50000.00),
+(2, 'Verma Traders', 'Verma', 'Anjali', '9865432101', '456 Nehru Nagar', 'Building 5', 'Delhi', 'Delhi', '110001', 'India', 102, 75000.00),
+(3, 'Sharma & Sons', 'Sharma', 'Rajesh', '9876541234', '789 Lajpat Nagar', 'Block A', 'Bangalore', 'Karnataka', '560001', 'India', 103, 60000.00);
+
+
+select contactLastName,contactFirstName, phone from customers
+
+select count(*) from customers;
+
+select contactLastName,contactFirstName, phone from customers
+where country ="India"
+
+CREATE TABLE employees (
+  employeeNumber int,
+  lastname varchar(50),
+  firstName varchar(50),
+  extension varchar(10),
+   email varchar(100),
+  officeCode varchar(10),
+  reportsTo int,
+   jobTitle varchar(30)
+) 
+
+insert into employees values(1703,"Jones", "smith", "x19200",
+"sjones@gmail.com",4, 1101, "sales Rep")
+
+
+
+INSERT INTO employees (employeeNumber, lastName, firstName, extension, email, officeCode, reportsTo, jobTitle)
+VALUES
+(201, 'Iyer', 'Amit', 'x1234', 'amit.iyer@example.com', 'OC01', NULL, 'Sales Manager'),
+(202, 'Nair', 'Priya', 'x5678', 'priya.nair@example.com', 'OC02', 201, 'Marketing Specialist'),
+(203, 'Kumar', 'Rohit', 'x9101', 'rohit.kumar@example.com', 'OC03', 201, 'IT Support Engineer');
+
+
+
+insert into employees_copy
+select * from employees
+
+
+SET SQL_SAFE_UPDATES = 0;
+
+update employees set extension='19320'
+where employeeNumber='1703'
+
+
+delete from employees  where 
+employeeNumber=1703
+
+
+select * from employees;
+start transaction;
+delete from employees where employeeNumber='202';
+select * from employees;
+rollback;
+select * from employees;
+
+
+CREATE TABLE PMSOffices 
+(
+  officeCode VARCHAR(10) ,
+  city VARCHAR(50) ,
+  phone VARCHAR(50) ,
+  addressLine1 VARCHAR(50) ,
+  addressLine2 VARCHAR(50) ,
+  state VARCHAR(50),
+  country VARCHAR(50) ,
+  postalCode VARCHAR(15)
+)
+
+ ALTER TABLE PMSOffices ADD COLUMN territory VARCHAR(10);
+ Alter table pmsoffices modify officeCode int;
+ alter table pmsoffices change city currentCity varchar(50);
+
+RENAME TABLE  PMSOffices TO  Offices; 
+
+truncate table offices;
+drop table offices;
+
+
+Trasaction Control Language
+==============================
+select * from employees;
+start transaction;
+
+insert into employees values(1712,"Jones2", "smith2", 
+"x19500","sjones2@gmail.com",6, 1109, "HR");
+
+SAVEPOINT my_savepoint; 
+
+insert into employees values(1708,"Jones3", "smith3", 
+"x19501","sjones3@gmail.com",7, 1108, "FIN");
+
+ROLLBACK TO SAVEPOINT my_savepoint; 
+
+insert into employees values(1710,"Jones4", "smith4", 
+"x19502","sjones4@gmail.com",8, 1109, "Admin");
+commit;

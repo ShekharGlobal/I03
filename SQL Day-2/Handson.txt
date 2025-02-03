@@ -1,0 +1,19 @@
+Requirement #1: Write a query to fetch student ID, first name, last name, 
+and course code for students who have enrolled for course having course_code as 167.
+ Student_Info and student_courses to be queried.
+
+Requirement #2: Write a query to display the discount offered on the courses 
+along with course descriptions.
+
+Pre-requisite for Requirement #3: Create a student record (student_info_ <employee id>).
+
+Note: Do not create any other detail regarding this student in any other table.
+
+Requirement #3: Write a query to fetch first names of the students along with the
+ course codes of the courses they have enrolled in. 
+
+Note: Even if the course_code does not exist for a student, the record needs to be 
+fetched.
+Get the same output as per the requirement above using:
+Left Join
+Right Join

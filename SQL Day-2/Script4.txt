@@ -1,0 +1,36 @@
+DROP TABLE IF EXISTS Payments;
+DROP TABLE IF EXISTS Customers;
+
+-- Create Customers table
+CREATE TABLE Customers (
+    customerNumber INT PRIMARY KEY,
+    customerName VARCHAR(100)
+);
+
+-- Insert records into Customers table
+INSERT INTO Customers (customerNumber, customerName) VALUES
+(101, 'Alpha Corp'),
+(102, 'Beta Ltd'),
+(103, 'Gamma Inc'),
+(104, 'Delta LLC'),
+(105, 'Epsilon Enterprises');
+
+-- Create Payments table with checkNumber
+CREATE TABLE Payments (
+    paymentID INT PRIMARY KEY AUTO_INCREMENT,
+    customerNumber INT,
+    checkNumber VARCHAR(50),
+    amount DECIMAL(10,2),
+    FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+
+-- Insert records into Payments table
+	INSERT INTO Payments (customerNumber, checkNumber, amount) VALUES
+	(101, 'CHK001', 500.00),
+(102, 'CHK002', 750.50),
+(103, 'CHK003', 300.75),
+(101, 'CHK004', 200.00),
+(105, 'CHK005', 1000.00),
+(102, 'CHK006', 400.00),
+(103, 'CHK007', 150.00),
+(104, 'CHK008', 250.00);  -- Added payment for customer 104 to be included in first query

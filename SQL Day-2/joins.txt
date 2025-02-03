@@ -1,0 +1,195 @@
+CREATE TABLE Offices (
+  officeCode VARCHAR(10) PRIMARY KEY,
+  city VARCHAR(50) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  addressLine1 VARCHAR(50) NOT NULL,
+  addressLine2 VARCHAR(50) NULL,
+  state VARCHAR(50) NULL,
+  country VARCHAR(50) NOT NULL,
+  postalCode VARCHAR(15) NOT NULL,
+  territory VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Employees (
+  employeeNumber INTEGER PRIMARY KEY,
+  lastName VARCHAR(50),
+  firstName VARCHAR(50),
+  extension VARCHAR(10),
+  email VARCHAR(100),
+  officeCode VARCHAR(10) REFERENCES Offices(officeCode),
+  reportsTo INTEGER REFERENCES Employees(employeeNumber),
+  jobTitle VARCHAR(50)
+);
+
+
+INSERT INTO Offices VALUES
+('001', 'New York', '+1-212-555-1234', '123 Wall Street', NULL, 'NY', 'USA', '10005', 'NA'),
+('002', 'Mumbai', '+91-22-5555-6789', '456 Marine Drive', 'Suite 100', 'Maharashtra', 'India', '400020', 'APAC'),
+('003', 'Bangalore', '+91-80-9999-1234', '789 MG Road', NULL, 'Karnataka', 'India', '560001', 'APAC');
+
+
+INSERT INTO Employees VALUES
+(1001, 'Smith', 'John', 'x101', 'john.smith@example.com', '001', NULL, 'CEO'),
+(1002, 'Sharma', 'Amit', 'x102', 'amit.sharma@example.com', '002', 1001, 'Manager'),
+(1003, 'Rao', 'Priya', 'x103', 'priya.rao@example.com', '003', 1002, 'Software Engineer');
+
+
+------------------------------------------------------------------
+
+
+SELECT o.city, o.country, e.jobtitle 
+FROM offices o INNER JOIN employees e 
+USING (officecode) 
+WHERE o.country LIKE '%USA%';
+---------------------------------------------------------
+Inner join
+--------------------------------------------
+SELECT o.city, o.country, e.jobtitle 
+FROM offices o Inner JOIN employees e 
+ON o.officecode=e.officecode; 
+
+
+
+-----------------------------------------------------
+EQUI Join
+
+SELECT o.city, o.country, e.jobtitle 
+FROM offices o INNER JOIN employees e 
+ON o.officecode=e.officecode
+=================================================================
+
+Non-equi
+
+CREATE TABLE Orders (
+    orderNumber INTEGER PRIMARY KEY,
+    orderDate DATETIME NOT NULL,
+    requiredDate DATETIME NOT NULL,
+    shippedDate DATETIME NULL,
+    status VARCHAR(15) NOT NULL,
+    comments TEXT NULL,
+    customerNumber INTEGER,
+    FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+INSERT INTO Orders (orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber) 
+VALUES 
+(101, '2024-02-01 10:30:00', '2024-02-05 12:00:00', '2024-02-04 14:00:00', 'Shipped', 'Delivered before due date', 1),
+(102, '2024-02-02 11:00:00', '2024-02-06 15:00:00', NULL, 'Pending', 'Awaiting shipment', 2),
+(103, '2024-02-01 09:00:00', '2024-01-30 12:00:00', '2024-02-02 14:00:00', 'Shipped', 'Late shipment', 1);
+
+SELECT o.orderNumber, o.requiredDate, o.shippedDate 
+FROM Orders o
+WHERE o.requiredDate < o.shippedDate;
+
+
+
+---------------------------------------------------------
+
+CREATE TABLE Customers (
+  customerNumber INTEGER PRIMARY KEY,
+  customerName VARCHAR(50) NOT NULL,
+  contactLastName VARCHAR(50) NOT NULL,
+  contactFirstName VARCHAR(50) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  addressLine1 VARCHAR(50) NOT NULL,
+  addressLine2 VARCHAR(50) NULL,
+  city VARCHAR(50) NOT NULL,
+  state VARCHAR(50) NULL,
+  postalCode VARCHAR(15) NOT NULL,
+  country VARCHAR(50) NOT NULL,
+  salesRepEmployeeNumber INTEGER NULL,
+  creditLimit DOUBLE NULL,
+  FOREIGN KEY (salesRepEmployeeNumber) REFERENCES Employees(employeeNumber)
+);
+
+CREATE TABLE Payments (
+  customerNumber INTEGER,
+  checkNumber VARCHAR(50),
+  paymentDate DATETIME NOT NULL,
+  amount DOUBLE NOT NULL,
+  PRIMARY KEY (customerNumber, checkNumber),
+  FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+
+INSERT INTO Customers (customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, city, country, postalCode, creditLimit)
+VALUES
+(1, 'Sharma Traders', 'Sharma', 'Amit', '+91-98101-11111', '123 MG Road', 'Mumbai', 'India', '400001', 5000),
+(2, 'Gupta Mart', 'Gupta', 'Priya', '+91-98202-22222', '456 Brigade Road', 'Bangalore', 'India', '560001', 7000),
+(3, 'Verma Wholesale', 'Verma', 'Ravi', '+91-98303-33333', '789 Park Street', 'Kolkata', 'India', '700001', 3000),
+(4, 'Reddy Enterprises', 'Reddy', 'Suresh', '+91-98404-44444', '321 Anna Salai', 'Chennai', 'India', '600002', 6000),
+(5, 'Iyer Supermart', 'Iyer', 'Venkatesh', '+91-98505-55555', '555 T Nagar', 'Chennai', 'India', '600017', 8000);
+
+
+INSERT INTO Payments (customerNumber, checkNumber, paymentDate, amount)
+VALUES 
+(1, 'CHK001', '2024-01-10', 1000),
+(2, 'CHK002', '2024-01-15', 2000),
+(3, 'CHK003', '2024-01-20', 1500),
+(5, 'CHK004', '2024-01-25', 2500);
+
+-------------------------------------------------------
+Left outer Join
+
+SELECT c.city, p.checknumber, p. amount 
+FROM customers c LEFT OUTER JOIN payments p  
+ON c.customernumber=p.customernumber; 
+
+The left table is the table that is in the FROM clause, or left of the join condition, the join clause here. And a right table is on the right side of the join clause. When we speak of a left outer join, what we're saying is, take all the rows from the left table, and join them to rows on the right table.
+--------------------------------------------------------
+
+Right Outer Join
+----------------------------------------------------------
+SELECT c.city, p.checknumber, p. amount 
+FROM customers c RIGHT OUTER JOIN payments p  
+ON c.customernumber=p.customernumber; 
+
+
+--------------------------------------------------------------
+
+Full Outer Join
+----------------------------------
+SELECT c.city, p.checknumber, p. amount 
+FROM customers c FULL OUTER JOIN payments p  
+ON c.customernumber=p.customernumber; 
+--------------------------------------------------------
+
+
+SELECT c.city, p.checkNumber, p.amount 
+FROM customers c
+LEFT JOIN payments p ON c.customerNumber = p.customerNumber
+
+UNION
+
+SELECT c.city, p.checkNumber, p.amount 
+FROM customers c
+RIGHT JOIN payments p ON c.customerNumber = p.customerNumber;
+
+
+
+
+
+========================================================================
+
+
+self join
+
+Scenario: Employee and Manager Relationship
+Each employee has a manager, and the Employees table has a reportsTo column that refers to another employeeNumber in the same table.
+
+SELECT e1.employeeNumber AS EmployeeID, 
+       e1.firstName AS EmployeeName, 
+       e2.employeeNumber AS ManagerID, 
+       e2.firstName AS ManagerName
+FROM Employees e1
+LEFT JOIN Employees e2 
+ON e1.reportsTo = e2.employeeNumber;
+
+
+John (1001) is the CEO, so he has no manager.
+Amit (1002) reports to John (1001).
+Priya (1003) reports to Amit (1002).
+
+
+e1 represents employees.
+e2 represents their managers (who are also employees).
+e1.reportsTo = e2.employeeNumber joins an employee with their manager.
+LEFT JOIN ensures employees without a manager (like the CEO) are still included.

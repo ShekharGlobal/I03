@@ -1,0 +1,162 @@
+SELECT COUNT(CustomerNumber) FROM Customers;
+
+SELECT SUM(amount) FROM Payments;
+
+SELECT MIN(amount) FROM Payments;
+
+SELECT MAX(amount) FROM Payments;
+
+
+=============================================
+
+SELECT CURRENT_DATE();
+SELECT CURRENT_TIME();
+SELECT CURRENT_TIMESTAMP();
+SELECT CURRENT_USER();
+SELECT SYSTEM_USER();
+SELECT SESSION_USER();
+
+================================================
+
+	SELECT UPPER(customerName) FROM Customers;
+
+	SELECT LOWER(customerName) FROM Customers;
+
+	SELECT CONCAT(customerNumber, customerName) FROM Customers;
+
+	SELECT SUBSTRING(customerName, 1, 3) FROM Customers;
+
+	SELECT TRIM(LEADING 'S' FROM customerName) FROM Customers;
+	
+        SELECT TRIM(TRAILING 's' FROM customerName) FROM Customers;
+
+	SELECT customerName, LENGTH(customerName) AS NameLength
+	FROM Customers;
+===============================================
+	SELECT ABS(-5) AS Result;
+
+	SELECT CEIL(4.3) AS Result;
+
+	SELECT FLOOR(4.9) AS Result;
+
+	SELECT MOD(10, 3) AS Result;
+
+	SELECT PI() AS Result;
+
+	SELECT POWER(2, 3) AS Result;
+
+	SELECT ROUND(4.6) AS Result;
+
+	SELECT SQRT(9) AS Result;
+
+	SELECT SQUARE(5) AS Result;
+
+	SELECT TRUNCATE(7.345, 2) AS Result;
+
+=====================================================
+
+
+DATE & TIME 
+
+	SELECT DATE('20231125') AS Result;
+	SELECT ADDDATE('2023-11-25', INTERVAL 7 DAY) AS Result;
+	SELECT DATEDIFF('2023-12-02', '2023-11-25') AS Result;
+	SELECT TIME('2023-11-25 14:30:00') AS Result;
+	SELECT EXTRACT(YEAR FROM '2023-11-25') AS Result;
+
+----------------------------------------------
+SELECT CURRENT_DATE() AS Result;
+SELECT CURRENT_TIME() AS Result;
+SELECT CURRENT_TIMESTAMP() AS Result;
+
+SELECT '2023-11-25' + INTERVAL 7 DAY AS Result;
+SELECT '2023-11-25' - INTERVAL 3 MONTH AS Result;
+SELECT DATEDIFF('2023-12-02', '2023-11-25') AS Result;
+
+==================================================
+
+
+SELECT 
+  productName,
+  CASE
+    WHEN quantityinstock > 10 THEN 'In Stock'
+    WHEN quantityinstock > 0 THEN 'Low Stock'
+    ELSE 'Out of Stock'
+  END AS StockStatus
+FROM products;
+
+SELECT IF(500<1000, "YES", "NO");
+
+SELECT AVG(ifnull(CREDITLIMIT,0)) FROM
+CUSTOMERS;
+
+=====================================================================
+
+SELECT country, COUNT(*) AS total_customers
+FROM Customers
+GROUP BY country;
+
+
+SELECT customerNumber, SUM(amount) AS total_sales
+FROM Payments
+GROUP BY customerNumber;
+
+
+SELECT customerNumber, AVG(amount) AS avg_order_value
+FROM Orders
+GROUP BY customerNumber;
+
+
+SELECT customerNumber, MIN(amount) AS min_payment, MAX(amount) AS max_payment
+FROM Payments
+GROUP BY customerNumber;
+
+
+SELECT country, city, COUNT(*) AS total_customers
+FROM Customers
+GROUP BY country, city;
+
+
+SELECT customerNumber, SUM(amount) AS total_payments
+FROM Payments
+GROUP BY customerNumber
+HAVING total_payments > 5000;
+
+
+-- Drop tables if they exist to avoid errors
+DROP TABLE IF EXISTS Payments;
+DROP TABLE IF EXISTS Customers;
+
+-- Create Customers table
+CREATE TABLE Customers (
+    customerNumber INT PRIMARY KEY,
+    customerName VARCHAR(100)
+);
+
+-- Insert records into Customers table
+INSERT INTO Customers (customerNumber, customerName) VALUES
+(101, 'Alpha Corp'),
+(102, 'Beta Ltd'),
+(103, 'Gamma Inc'),
+(104, 'Delta LLC'),
+(105, 'Epsilon Enterprises');
+
+-- Create Payments table with checkNumber
+CREATE TABLE Payments (
+    paymentID INT PRIMARY KEY AUTO_INCREMENT,
+    customerNumber INT,
+    checkNumber VARCHAR(50),
+    amount DECIMAL(10,2),
+    FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+
+-- Insert records into Payments table
+	INSERT INTO Payments (customerNumber, checkNumber, amount) VALUES
+	(101, 'CHK001', 500.00),
+(102, 'CHK002', 750.50),
+(103, 'CHK003', 300.75),
+(101, 'CHK004', 200.00),
+(105, 'CHK005', 1000.00),
+(102, 'CHK006', 400.00),
+(103, 'CHK007', 150.00),
+(104, 'CHK008', 250.00);  -- Added payment for customer 104 to be included in first query

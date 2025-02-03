@@ -1,0 +1,41 @@
+CREATE TABLE Customers (
+  customerNumber INTEGER PRIMARY KEY,
+  customerName VARCHAR(50) NOT NULL,
+  contactLastName VARCHAR(50) NOT NULL,
+  contactFirstName VARCHAR(50) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  addressLine1 VARCHAR(50) NOT NULL,
+  addressLine2 VARCHAR(50) NULL,
+  city VARCHAR(50) NOT NULL,
+  state VARCHAR(50) NULL,
+  postalCode VARCHAR(15) NOT NULL,
+  country VARCHAR(50) NOT NULL,
+  salesRepEmployeeNumber INTEGER NULL,
+  creditLimit DOUBLE NULL,
+  FOREIGN KEY (salesRepEmployeeNumber) REFERENCES Employees(employeeNumber)
+);
+
+CREATE TABLE Payments (
+  customerNumber INTEGER,
+  checkNumber VARCHAR(50),
+  paymentDate DATETIME NOT NULL,
+  amount DOUBLE NOT NULL,
+  PRIMARY KEY (customerNumber, checkNumber),
+  FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+
+INSERT INTO Customers (customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, city, country, postalCode, creditLimit)
+VALUES
+(1, 'Sharma Traders', 'Sharma', 'Amit', '+91-98101-11111', '123 MG Road', 'Mumbai', 'India', '400001', 5000),
+(2, 'Gupta Mart', 'Gupta', 'Priya', '+91-98202-22222', '456 Brigade Road', 'Bangalore', 'India', '560001', 7000),
+(3, 'Verma Wholesale', 'Verma', 'Ravi', '+91-98303-33333', '789 Park Street', 'Kolkata', 'India', '700001', 3000),
+(4, 'Reddy Enterprises', 'Reddy', 'Suresh', '+91-98404-44444', '321 Anna Salai', 'Chennai', 'India', '600002', 6000),
+(5, 'Iyer Supermart', 'Iyer', 'Venkatesh', '+91-98505-55555', '555 T Nagar', 'Chennai', 'India', '600017', 8000);
+
+
+INSERT INTO Payments (customerNumber, checkNumber, paymentDate, amount)
+VALUES 
+(1, 'CHK001', '2024-01-10', 1000),
+(2, 'CHK002', '2024-01-15', 2000),
+(3, 'CHK003', '2024-01-20', 1500),
+(5, 'CHK004', '2024-01-25', 2500);

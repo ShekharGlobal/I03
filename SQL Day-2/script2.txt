@@ -1,0 +1,15 @@
+CREATE TABLE Orders (
+    orderNumber INTEGER PRIMARY KEY,
+    orderDate DATETIME NOT NULL,
+    requiredDate DATETIME NOT NULL,
+    shippedDate DATETIME NULL,
+    status VARCHAR(15) NOT NULL,
+    comments TEXT NULL,
+    customerNumber INTEGER,
+    FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+INSERT INTO Orders (orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber) 
+VALUES 
+(101, '2024-02-01 10:30:00', '2024-02-05 12:00:00', '2024-02-04 14:00:00', 'Shipped', 'Delivered before due date', 1),
+(102, '2024-02-02 11:00:00', '2024-02-06 15:00:00', NULL, 'Pending', 'Awaiting shipment', 2),
+(103, '2024-02-01 09:00:00', '2024-01-30 12:00:00', '2024-02-02 14:00:00', 'Shipped', 'Late shipment', 1);

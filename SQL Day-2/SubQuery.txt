@@ -1,0 +1,56 @@
+
+CREATE TABLE Customers (
+    customerNumber INT PRIMARY KEY,
+    customerName VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Payments (
+    customerNumber INT,
+    checkNumber VARCHAR(50) PRIMARY KEY,
+    amount DOUBLE NOT NULL,
+    FOREIGN KEY (customerNumber) REFERENCES Customers(customerNumber)
+);
+
+
+
+
+
+INSERT INTO Customers (customerNumber, customerName) VALUES
+(101, 'Rajesh Kumar'),
+(102, 'Priya Sharma'),
+(103, 'Amit Verma'),
+(104, 'Sneha Iyer'); -- A customer without payments (for non-correlated subquery test)
+
+
+
+INSERT INTO Payments (customerNumber, checkNumber, amount) VALUES
+(101, 'CHK001', 500.00),
+(101, 'CHK002', 1000.00),
+(102, 'CHK003', 1500.00),
+(102, 'CHK004', 700.00),
+(103, 'CHK005', 300.00),
+(103, 'CHK006', 1200.00);
+
+
+Non-Correlated Subquery (Find Customers Who Made Payments)
+sql
+Copy
+Edit
+SELECT customerNumber, customerName 
+FROM Customers 
+WHERE customerNumber IN (SELECT DISTINCT customerNumber FROM Payments);
+✅ Expected Result:
+Returns customers who have made payments
+
+
+Correlated Subquery (Find Payments Above Customer's Average)
+sql
+Copy
+Edit
+SELECT customerNumber, checkNumber, amount 
+FROM Payments p1
+WHERE amount > (SELECT AVG(amount) FROM Payments p2 WHERE p1.customerNumber = p2.customerNumber);
+✅ Expected Result:
+
+This query finds payments that are higher than the customer's own average payment.
+It will return payments like CHK002 (1000.00) and CHK003 (1500.00) because they are above the respective customer's average.

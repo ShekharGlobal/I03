@@ -1,0 +1,48 @@
+
+
+Node js download-: https://nodejs.org/en/download/
+
+install type script-npx install -g typescript
+
+install angular- npm install -g @angular/cli@latest
+
+Create the angular application
+ 
+npx -p@angular/cli@15 ng new Combtcom  --standalone=false
+
+Switch to project
+ Cd <project-name>
+
+Version Check
+node -v
+npm -v   
+tsc -v
+ng version
+
+Bootstrap Install- npm install bootstrap@latest
+Add Bootstrap in angular.json- "styles": [
+              				"src/styles.css",
+              				 "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            				],
+Note- search for style in angular. json and in the first style modify it
+
+Compnent Generate- ng g c my-component --skip-tests --inline-style
+
+Server Start-ng serve -o 
+ 
+Compnent Generate- ng g c my-component --skip-tests --inline-style
+
+
+
+Steps to run the zip file from github
+1. download zip file
+2. Extract it
+3. Create a folder in your D drive- Angular_Examples
+4. Copy and paste the extracted folder in Angular_Examples.
+5. Repeat the steps for every Zipped folder exmples
+6. Open the VS Code
+7. Open the folder Angular_Examples
+8. cd <Project-name>
+
+
+

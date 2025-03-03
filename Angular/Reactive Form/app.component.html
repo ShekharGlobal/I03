@@ -1,0 +1,136 @@
+<!--Model Driven forms provides the more flexibility to developers 
+to handle "validations".
+• Model Driven Forms also called as "Reactive Forms".
+• Reactive Forms present in "ReactiveFormsModule".
+• [formGroup] is the directive used to assign the logical name to 
+Forms.
+• "formControlName" is the directive used to save the forms 
+data(form fields data).
+• "formGroupName" is the directive used to create the SubGroups.
+-->
+
+
+<div class="container">
+  <form [formGroup]="profileData" (ngSubmit)="register()">
+
+    <!-- Username -->
+    <div class="form-group">
+      <label for="uname">Username</label>
+      <input
+        id="uname"
+        type="text"
+        class="form-control"
+        formControlName="uname"
+        required
+      />
+      <small
+        *ngIf="(profileData.controls['uname'].touched || profileData.controls['uname'].dirty) 
+        && profileData.controls['uname'].hasError('required')"
+        class="text-danger"
+      >
+        **** Username is required ****
+      </small>
+      <small
+        *ngIf="(profileData.controls['uname'].touched || profileData.controls['uname'].dirty) 
+        && profileData.controls['uname'].hasError('minlength')"
+        class="text-danger"
+      >
+        **** Minimum 3 characters required ****
+      </small>
+      <small
+        *ngIf="(profileData.controls['uname'].touched || profileData.controls['uname'].dirty) 
+        && profileData.controls['uname'].hasError('maxlength')"
+        class="text-danger"
+      >
+        **** Maximum 6 characters allowed ****
+      </small>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group" formGroupName="addr">
+      <label for="address">Address</label>
+      <textarea
+        id="address"
+        class="form-control"
+        formControlName="address"
+        rows="3"
+        required
+      ></textarea>
+      <small
+        *ngIf="(profileData.get('addr.address')?.touched || profileData.get('addr.address')?.dirty)
+         && profileData.get('addr.address')?.hasError('required')"
+        class="text-danger"
+      >
+        **** Address is required ****
+      </small>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+      <label>Gender</label>
+      <div class="btn-group" role="group" aria-label="Gender Selection">
+        <label class="btn btn-primary" [class.active]="profileData.controls['gender'].
+        value === 'male'">
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            formControlName="gender"
+          /> Male
+        </label>
+        <label class="btn btn-primary" [class.active]="profileData.controls['gender'].
+        value === 'female'">
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            formControlName="gender"
+          /> Female
+        </label>
+      </div>
+      <small
+        *ngIf="(profileData.controls['gender'].touched || profileData.controls['gender'].dirty)
+         && profileData.controls['gender'].hasError('required')"
+        class="text-danger"
+      >
+        **** Gender is required ****
+      </small>
+    </div>
+
+    <!-- Country -->
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select
+        id="country"
+        class="form-control"
+        formControlName="country"
+        required
+      >
+        <option value="">-- Select Country --</option>
+        <option value="india">India</option>
+        <option value="usa">USA</option>
+        <option value="canada">Canada</option>
+        
+      </select>
+      <small
+        *ngIf="(profileData.controls['country'].touched || profileData.controls['country'].dirty) 
+        && profileData.controls['country'].hasError('required')"
+        class="text-danger"
+      >
+        **** Country is required ****
+      </small>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group text-center">
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="profileData.invalid"
+      >
+        Submit
+      </button>
+    </div>
+
+  </form>
+</div>
